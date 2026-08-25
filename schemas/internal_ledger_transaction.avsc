@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "InternalLedgerTransaction",
+  "namespace": "com.ledgersync.sources.ledger",
+  "fields": [
+    {"name": "id", "type": "long", "doc": "PostgreSQL primary key"},
+    {"name": "uuid", "type": "string", "doc": "Business transaction ID"},
+    {"name": "amount_cents", "type": "long", "doc": "Amount in cents"},
+    {"name": "currency_code", "type": "string"},
+    {"name": "status", "type": "string"},
+    {"name": "type", "type": "string"},
+    {"name": "created_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "updated_at", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}

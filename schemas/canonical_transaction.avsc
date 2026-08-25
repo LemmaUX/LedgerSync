@@ -1,0 +1,74 @@
+{
+  "type": "record",
+  "name": "CanonicalTransaction",
+  "namespace": "com.ledgersync.domain",
+  "fields": [
+    {
+      "name": "transaction_id",
+      "type": "string",
+      "doc": "Unique identifier for the transaction (UUID v4)"
+    },
+    {
+      "name": "source_system",
+      "type": {
+        "type": "enum",
+        "name": "SourceSystem",
+        "symbols": ["INTERNAL_LEDGER", "PAYMENT_GATEWAY", "ACQUIRING_BANK"]
+      },
+      "doc": "Origin system of the transaction"
+    },
+    {
+      "name": "external_reference",
+      "type": ["null", "string"],
+      "default": null,
+      "doc": "Reference ID from the source system (e.g., gateway transaction ID)"
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "record",
+        "name": "Money",
+        "fields": [
+          {"name": "value", "type": "long", "doc": "Amount in minor units (e.g., cents)"},
+          {"name": "currency", "type": "string", "doc": "ISO 4217 currency code (e.g., USD, EUR)"}
+        ]
+      },
+      "doc": "Transaction amount"
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "TransactionStatus",
+        "symbols": ["PENDING", "COMPLETED", "FAILED", "REFUNDED", "CHARGED_BACK"]
+      },
+      "doc": "Current status of the transaction"
+    },
+    {
+      "name": "transaction_type",
+      "type": {
+        "type": "enum",
+        "name": "TransactionType",
+        "symbols": ["PAYMENT", "REFUND", "CHARGEBACK", "FEE", "TRANSFER"]
+      },
+      "doc": "Type of transaction"
+    },
+    {
+      "name": "occurred_at",
+      "type": {"type": "long", "logicalType": "timestamp-millis"},
+      "doc": "Timestamp when the transaction occurred (source system clock)"
+    },
+    {
+      "name": "ingested_at",
+      "type": {"type": "long", "logicalType": "timestamp-millis"},
+      "doc": "Timestamp when the transaction was ingested by LedgerSync"
+    },
+    {
+      "name": "metadata",
+      "type": ["null", {"type": "map", "values": "string"}],
+      "default": null,
+      "doc": "Additional metadata (e.g., card brand, merchant category)"
+    }
+  ],
+  "doc": "Canonical transaction model for reconciliation across heterogeneous sources"
+}
